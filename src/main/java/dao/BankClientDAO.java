@@ -44,6 +44,9 @@ public class BankClientDAO {
     }
 
     public boolean validateClient(String name, String password) {
+        if (name == null || password == null) {
+            return false;
+        }
         if (name.isEmpty() || password.isEmpty()) {
             return false;
         }
@@ -93,20 +96,26 @@ public class BankClientDAO {
     }
 
     public BankClient getClientByName(String name) throws SQLException {
-        Statement stmt = connection.createStatement();
-        stmt.executeQuery("select * from bank_client where name='" + name + "'");
-        ResultSet result = stmt.getResultSet();
-        result.next();
-        String foundName = result.getString(2);
+        PreparedStatement preparedStatement = null;
+        preparedStatement = connection.prepareStatement("select * from bank_client where name='" + name + "'");
+        ResultSet result = preparedStatement.executeQuery();
+
+        String foundName = "";
+        Long id = 0L;
+        Long money = 0L;
+        String password = "";
+
+        if(result.next()) {
+            foundName = result.getString(2);
+            id = result.getLong(1);
+            money = result.getLong(4);
+            password = result.getString(3);
+            result.close();
+        }
+
         if (foundName.isEmpty()) {
             return null;
         }
-        Long id = result.getLong(1);
-        Long money = result.getLong(4);
-        String password = result.getString(3);
-        result.close();
-        stmt.close();
-
         return new BankClient(id, name, password, money);
     }
 

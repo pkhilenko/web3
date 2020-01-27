@@ -48,13 +48,14 @@ public class BankClientService {
 
     public boolean addClient(BankClient client) {
         BankClientDAO dao = getBankClientDAO();
+        String name = client.getName();
+        String password = client.getPassword();
 
-        if (getClientByName(client.getName()) != null || ! dao.validateClient(client.getName(), client.getPassword())) {
+        if (getClientByName(name) != null || !dao.validateClient(name, password)) {
             return false;
         }
 
-        String name = client.getName();
-        String password = client.getPassword();
+
         Long money = client.getMoney();
 
         BankClient createClient = new BankClient(name, password, money);
@@ -74,21 +75,26 @@ public class BankClientService {
         String senderPassword = sender.getPassword();
         Connection dc =  dao.getConnection();
         BankClient toSend = getClientByName(name);
+        BankClient senderr = getClientByName(sender.getName());
+
+        if (senderr == null || toSend == null) {
+            return false;
+        }
 
         try {
-            if (dao.isClientHasSum(senderName, value) && toSend != null) {
-                dc.setAutoCommit(false);
-
-                try {
-                    dao.updateClientsMoney(senderName, senderPassword, -value);
-                    dao.updateClientsMoney(name, toSend.getPassword(), value);
-                    dc.commit();
-                } catch (SQLException e) {
-                    dc.rollback();
-                    System.out.println(e.getMessage());
-                    return false;
-                }
+            if (!dao.isClientHasSum(senderName, value)) {
+                return false;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        try {
+            dc.setAutoCommit(false);
+            dao.updateClientsMoney(senderName, senderPassword, -value);
+            dao.updateClientsMoney(name, toSend.getPassword(), value);
+            dc.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
