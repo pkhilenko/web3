@@ -75,9 +75,9 @@ public class BankClientService {
         String senderPassword = sender.getPassword();
         Connection dc =  dao.getConnection();
         BankClient toSend = getClientByName(name);
-        BankClient senderr = getClientByName(sender.getName());
+//        BankClient senderr = getClientByName(sender.getName());
 
-        if (senderr == null || toSend == null) {
+        if (toSend == null) {
             return false;
         }
 
@@ -96,6 +96,12 @@ public class BankClientService {
             dao.updateClientsMoney(name, toSend.getPassword(), value);
             dc.commit();
         } catch (SQLException e) {
+            try {
+                dc.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
             e.printStackTrace();
             return false;
         }

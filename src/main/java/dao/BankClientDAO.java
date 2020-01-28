@@ -59,7 +59,8 @@ public class BankClientDAO {
         pst.setLong(1, transactValue);
         pst.setString(2, name);
         pst.setString(3, password);
-        if (pst.executeUpdate() != 1) {
+        int queried = pst.executeUpdate();
+        if (queried != 1) {
             throw new SQLException();
         }
     }
