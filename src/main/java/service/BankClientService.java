@@ -95,7 +95,7 @@ public class BankClientService {
             dao.updateClientsMoney(senderName, senderPassword, -value);
             dao.updateClientsMoney(name, toSend.getPassword(), value);
             dc.commit();
-        } catch (SQLException e) {
+        } catch (RuntimeException | SQLException e) {
             e.printStackTrace();
             return false;
         }

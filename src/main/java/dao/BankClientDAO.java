@@ -38,7 +38,7 @@ public class BankClientDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return all;
         }
         return all;
     }
@@ -53,14 +53,14 @@ public class BankClientDAO {
         return true;
     }
 
-    public void updateClientsMoney(String name, String password, Long transactValue) throws SQLException {
+    public void updateClientsMoney(String name, String password, Long transactValue) throws RuntimeException, SQLException {
         String sql = "update bank_client set money=money+?  where name=? and password=?";
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setLong(1, transactValue);
         pst.setString(2, name);
         pst.setString(3, password);
         if (pst.executeUpdate() != 1) {
-            throw new SQLException();
+            throw new RuntimeException();
         }
     }
 

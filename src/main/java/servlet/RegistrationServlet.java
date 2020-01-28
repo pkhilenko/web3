@@ -46,11 +46,11 @@ public class RegistrationServlet extends HttpServlet {
                json = gson.toJson("Add client successful");
                pageVariables.put("message", "Add client successful");
            } else {
-               resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+               resp.setStatus(HttpServletResponse.SC_OK);
                json = gson.toJson("Client not add");
                pageVariables.put("message", "Client not add");
            }
-        resp.getWriter().println(json);
-//        resp.getWriter().println(PageGenerator.getInstance().getPage("resultPage.html", pageVariables));
+//        resp.getWriter().println(json);
+        resp.getWriter().println(PageGenerator.getInstance().getPage("resultPage.html", pageVariables));
     }
 }

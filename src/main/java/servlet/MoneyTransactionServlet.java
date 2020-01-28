@@ -49,11 +49,11 @@ public class MoneyTransactionServlet extends HttpServlet {
             json = gson.toJson("The transaction was successful");
             pageVariables.put("message", "The transaction was successful");
         } else {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.setStatus(HttpServletResponse.SC_OK);
             json = gson.toJson("transaction rejected");
             pageVariables.put("message", "transaction rejected");
         }
-        resp.getWriter().println(json);
-//        resp.getWriter().println(PageGenerator.getInstance().getPage("resultPage.html", pageVariables));
+//        resp.getWriter().println(json);
+        resp.getWriter().println(PageGenerator.getInstance().getPage("resultPage.html", pageVariables));
     }
 }
