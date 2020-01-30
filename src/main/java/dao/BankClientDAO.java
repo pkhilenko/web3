@@ -8,7 +8,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BankClientDAO {
+public class
+BankClientDAO {
 
     private Connection connection;
 
@@ -69,11 +70,16 @@ public class BankClientDAO {
         Statement stmt = connection.createStatement();
         stmt.execute("select * from bank_client where id='" + id + "'");
         ResultSet result = stmt.getResultSet();
-        result.next();
+        String password = "";
+        String name = "";
+        Long money = 0L;
 
-        Long money = result.getLong(4);
-        String name = result.getString("name");
-        String password = result.getString("password");
+        if (result.next()) {
+            money = result.getLong(4);
+            name = result.getString("name");
+            password = result.getString("password");
+        }
+
         result.close();
         stmt.close();
 

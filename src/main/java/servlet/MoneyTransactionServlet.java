@@ -33,7 +33,7 @@ public class MoneyTransactionServlet extends HttpServlet {
 
         String senderName = req.getParameter("senderName");
         String nameTo = req.getParameter("nameTo");
-        String password = req.getParameter("senderPassword");
+        String password = req.getParameter("senderPass");
         Long count = 0L;
 
         try {
@@ -49,7 +49,7 @@ public class MoneyTransactionServlet extends HttpServlet {
             json = gson.toJson("The transaction was successful");
             pageVariables.put("message", "The transaction was successful");
         } else {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.setStatus(HttpServletResponse.SC_OK);
             json = gson.toJson("transaction rejected");
             pageVariables.put("message", "transaction rejected");
         }

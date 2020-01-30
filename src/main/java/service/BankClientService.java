@@ -75,7 +75,6 @@ public class BankClientService {
         String senderPassword = sender.getPassword();
         Connection dc =  dao.getConnection();
         BankClient toSend = getClientByName(name);
-//        BankClient senderr = getClientByName(sender.getName());
 
         if (toSend == null) {
             return false;
