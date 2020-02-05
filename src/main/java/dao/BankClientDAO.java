@@ -1,6 +1,7 @@
 package dao;
 
 //import com.sun.deploy.util.SessionState;
+import exception.DBException;
 import model.BankClient;
 
 import java.io.IOException;
@@ -54,7 +55,7 @@ BankClientDAO {
         return true;
     }
 
-    public void updateClientsMoney(String name, String password, Long transactValue) throws SQLException {
+    public void updateClientsMoney(String name, String password, Long transactValue) throws SQLException, DBException {
         String sql = "update bank_client set money=money+?  where name=? and password=?";
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setLong(1, transactValue);
@@ -62,7 +63,7 @@ BankClientDAO {
         pst.setString(3, password);
         int queried = pst.executeUpdate();
         if (queried != 1) {
-            throw new SQLException();
+            throw new DBException();
         }
     }
 
