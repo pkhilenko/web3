@@ -35,10 +35,9 @@ public class BankClientService {
     }
 
     public boolean deleteClient(String name) {
-        String sql = "delete bank_client  where name='" + name + "'";
-
-        try (Statement stmt = getMysqlConnection().createStatement()) {
-            stmt.execute(sql);
+        BankClientDAO dao = getBankClientDAO();
+        try {
+            dao.deleteClient(name);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
